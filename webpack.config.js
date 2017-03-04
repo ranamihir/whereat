@@ -12,7 +12,7 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         exclude: /node_modules/,
         loader: 'style-loader!css-loader!sass-loader?sourceMap' // CSS -> Style (Right to Left)
       }

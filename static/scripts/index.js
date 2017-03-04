@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-class Hello extends Component {
+import Map from './containers/Map';
+
+class App extends Component {
   constructor(props) {
     super(props);
   }
   render() {
     return (
-      <h1>
-        Hello React!
-      </h1>
+      <div>
+        <Map />
+      </div>
     );
   }
 }
 
 ReactDOM.render(
-  <Hello />,
+  <App />,
   document.getElementById('react-app')
 );
