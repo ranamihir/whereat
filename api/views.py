@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.http import JsonResponse
 
@@ -8,7 +8,7 @@ import json
 
 # Create your views here.
 def index(request):
-    return HttpResponse("<h1>This is the API homepage.</h1>")
+    return render_to_response('index.html')
 
 def item(request):
     query = request.GET.get('query')
