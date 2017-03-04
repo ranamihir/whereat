@@ -124,7 +124,8 @@
             }, calculateDistance);
 
           function calculateDistance(response, status) {
-            console.log(response.rows[0].elements[0].distance.text);
+            var distance = response.rows[0].elements[0].distance.text;
+            console.log(distance);
           }
 
 
