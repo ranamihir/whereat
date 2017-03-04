@@ -33,7 +33,6 @@
             };
           infoWindow.setPosition(pos);
 
-
           var geocoder = new google.maps.Geocoder(), latlng = new google.maps.LatLng(pos.lat, pos.lng);
           geocoder.geocode({'latLng': latlng}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
@@ -108,6 +107,26 @@
             map: map,
             icon: publicPlaceImage
           });
+
+
+
+          var origin = new google.maps.LatLng(pos.lat, pos.lng);
+          var destination = new google.maps.LatLng(pos.lat+0.01, pos.lng+0.01);
+
+          var service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix({
+              origins: [origin],
+              destinations: [destination],
+              travelMode: 'WALKING',
+              unitSystem: google.maps.UnitSystem.METRIC,
+              avoidHighways: true,
+              avoidTolls: true,
+            }, calculateDistance);
+
+          function calculateDistance(response, status) {
+            console.log(response.rows[0].elements[0].distance.text);
+          }
+
 
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
