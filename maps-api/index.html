@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Whereat API</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>  
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -28.6139, lng: 77.2090},
+          zoom: 15
+        });
+        var infoWindow = new google.maps.InfoWindow({map: map});
+        if (navigator.geolocation) {
+          infoWindow.close();
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+          infoWindow.setPosition(pos);
+
+
+          var geocoder = new google.maps.Geocoder(), latlng = new google.maps.LatLng(pos.lat, pos.lng);
+          geocoder.geocode({'latLng': latlng}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              if (results[1]) {
+                var current_short_location = results[0].address_components[0].short_name + ', ' + results[0].address_components[1].short_name;
+                // infoWindow.setContent(current_short_location);
+              } else {
+                infoWindow.setContent('No results found');
+              }
+            } else {
+              infoWindow.setContent('Geocoder failed due to: ' + status);
+            }
+          });
+
+          map.setCenter(pos);
+
+          var centreMarker = new google.maps.Marker({
+            position: {lat: pos.lat, lng: pos.lng},
+            map: map
+          });
+
+          function recenter() {
+            var currCenter = map.getCenter();
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(currCenter);
+          }          
+
+          var circle = new google.maps.Circle({
+            map: map,
+            radius: 5000,
+            fillOpacity: 0.1,
+            strokeColor: '#388e3c'
+
+          });
+          circle.bindTo('center', centreMarker, 'position');
+
+          var monumentImage = {
+            url: './monument.png',
+            scaledSize: new google.maps.Size(20, 20)
+          };
+
+          var monumentMarker = new google.maps.Marker({
+            position: {lat: pos.lat+0.01, lng: pos.lng-0.01},
+            map: map,
+            icon: monumentImage
+          });
+
+          var monumentMarker2 = new google.maps.Marker({
+            position: {lat: pos.lat-0.01, lng: pos.lng+0.01},
+            map: map,
+            icon: monumentImage
+          });
+
+          var restaurantImage = {
+            url: './restaurant.png',
+            scaledSize: new google.maps.Size(40, 20)
+          };
+
+          var restaurantMarker = new google.maps.Marker({
+            position: {lat: pos.lat+0.01, lng: pos.lng+0.01},
+            map: map,
+            icon: restaurantImage
+          });
+
+          var publicPlaceImage = {
+            url: './public_place.png',
+            scaledSize: new google.maps.Size(30, 30)
+          };
+
+          var publicPlaceMarker = new google.maps.Marker({
+            position: {lat: pos.lat-0.01, lng: pos.lng-0.01},
+            map: map,
+            icon: publicPlaceImage
+          });
+
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW6Q85aBIPukYjr2gvYfgHbwXysO_UBmA&callback=initMap">
+    </script>
+  </body>
+</html>
