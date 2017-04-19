@@ -20,6 +20,7 @@ class App extends Component {
           },
           key: Date.now(),
           defaultAnimation: 2,
+          title: 'Tin Tin'
         }
       }]
     };

@@ -20,13 +20,14 @@ const geolocation = (
 const AppMap = withGoogleMap(props => (
   <GoogleMap
     ref={props.onMapLoad}
-    defaultZoom={12}
+    defaultZoom={15}
     center={props.center}
     onClick={props.onMapClick}>
     {
       props.markers.map((marker, index) => (
         <Marker
           {...marker}
+          title={marker.title}
           onRightClick={() => props.onMarkerRightClick(index)} />
       ))
     }
@@ -72,7 +73,7 @@ export default class Map extends Component {
       modalOpen: false,
       center: null,
       content: null,
-      radius: 250,
+      radius: 50,
       isUnmounted: false,
       markers: [],
       e: null,
@@ -195,6 +196,7 @@ export default class Map extends Component {
   }
 
   addItem() {
+    this.state.newItem.marker.title = this.state.newItem.name;
     this.props.addItem(this.state.newItem);
     const newMark = [
       ...this.state.markers,

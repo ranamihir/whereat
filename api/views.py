@@ -12,7 +12,7 @@ def index(request):
 
 def item(request):
     query = request.GET.get('query')
-    item_data = Item.objects.get(pk=1)
+    item_data = Item.objects.get(pk=int(query))
     response_data = {}
     response_data['title'] = item_data.title
     response_data['category'] = item_data.category

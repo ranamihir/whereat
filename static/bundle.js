@@ -14086,11 +14086,12 @@ var AppMap = (0, _reactGoogleMaps.withGoogleMap)(function (props) {
     _reactGoogleMaps.GoogleMap,
     {
       ref: props.onMapLoad,
-      defaultZoom: 12,
+      defaultZoom: 15,
       center: props.center,
       onClick: props.onMapClick },
     props.markers.map(function (marker, index) {
       return React.createElement(_reactGoogleMaps.Marker, _extends({}, marker, {
+        title: marker.title,
         onRightClick: function onRightClick() {
           return props.onMarkerRightClick(index);
         } }));
@@ -14142,7 +14143,7 @@ var Map = function (_Component) {
       modalOpen: false,
       center: null,
       content: null,
-      radius: 250,
+      radius: 50,
       isUnmounted: false,
       markers: [],
       e: null,
@@ -14282,6 +14283,7 @@ var Map = function (_Component) {
   }, {
     key: 'addItem',
     value: function addItem() {
+      this.state.newItem.marker.title = this.state.newItem.name;
       this.props.addItem(this.state.newItem);
       var newMark = [].concat(_toConsumableArray(this.state.markers), [this.state.newItem.marker]);
       this.setState({
@@ -52198,7 +52200,8 @@ var App = function (_Component) {
             lng: 77.9021614
           },
           key: Date.now(),
-          defaultAnimation: 2
+          defaultAnimation: 2,
+          title: 'Tin Tin'
         }
       }]
     };
